@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import TodoForm from "./todoForm"
+import Todo from "./todo"
 import './App.css';
 
-function App() {
+export default  function App() {
+const [todos, setTodos]=useState([
+  {text : "hooks checkpoint",
+isCompleted : false},
+  {text : "hooks :)",
+  isCompleted : false},
+  {text : "hooks",
+  isCompleted : false}  
+
+]);
+const addTodo = text =>{
+  const newTodos = [...todos, {text}];
+  setTodos(newTodos)
+}
+
+const completeTodo = index=>{
+  const newTodos = [...todos];
+  newTodos[index].isCompleted = !newTodos[index].isCompleted;
+
+  setTodos(newTodos)
+
+};
+
+const deleteTodo= index=>{
+  const newTodos=[...todos];
+  newTodos.splice(index,1)
+  setTodos(newTodos)
+}
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="todo-list">
+        {todos.map((todo, index)=>(
+          <Todo key={index} index={index} todo={todo} completeTodo={completeTodo} deleteTodo={deleteTodo}/>
+        ))}
+        <TodoForm addTodo={addTodo}/>
+
+      </div>
     </div>
   );
 }
-
-export default App;
